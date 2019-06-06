@@ -13,15 +13,18 @@ namespace Template
 		public ObjVertex[] vertices;            // vertex positions, model space
 		public ObjTriangle[] triangles;         // triangles (3 vertex indices)
 		public ObjQuad[] quads;                 // quads (4 vertex indices)
+        public Matrix4 modelMatrix;
 		int vertexBufferId;                     // vertex buffer
 		int triangleBufferId;                   // triangle buffer
 		int quadBufferId;                       // quad buffer
 
 		// constructor
-		public Mesh( string fileName )
+		public Mesh( string fileName, float angle, float scale, Vector2 position)
 		{
 			MeshLoader loader = new MeshLoader();
 			loader.Load( this, fileName );
+
+            modelMatrix = Matrix4.CreateRotationY(angle) * Matrix4.CreateScale(scale) * Matrix4.CreateTranslation(new Vector3(position.X, position.Y, 0));
 		}
 
 		// initialization; called during first render
