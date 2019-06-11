@@ -24,6 +24,7 @@ namespace Template
 			MeshLoader loader = new MeshLoader();
 			loader.Load( this, fileName );
 
+            //Model Matrix, added to make local transformations possible
             modelMatrix = Matrix4.CreateRotationY(angle) * Matrix4.CreateScale(scale) * Matrix4.CreateTranslation(new Vector3(position.X, position.Y, 0));
 		}
 
