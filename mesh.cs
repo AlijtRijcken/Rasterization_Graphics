@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using System.Collections.Generic;
 
 namespace Template
 {
@@ -13,20 +14,31 @@ namespace Template
 		public ObjVertex[] vertices;            // vertex positions, model space
 		public ObjTriangle[] triangles;         // triangles (3 vertex indices)
 		public ObjQuad[] quads;                 // quads (4 vertex indices)
-        public Matrix4 modelMatrix;
+        public Vector3 angle, scale, position;  //model matrix variables
+        public List<Mesh> children;
 		int vertexBufferId;                     // vertex buffer
 		int triangleBufferId;                   // triangle buffer
 		int quadBufferId;                       // quad buffer
 
 		// constructor
-		public Mesh( string fileName, float angle, float scale, Vector2 position)
+		public Mesh( string fileName, Vector3 angle, Vector3 scale, Vector3 position )
 		{
 			MeshLoader loader = new MeshLoader();
 			loader.Load( this, fileName );
 
-            //Model Matrix, added to make local transformations possible
-            modelMatrix = Matrix4.CreateRotationY(angle) * Matrix4.CreateScale(scale) * Matrix4.CreateTranslation(new Vector3(position.X, position.Y, 0));
+            this.angle = angle;
+            this.scale = scale;
+            this.position = position;          
 		}
+
+        public Matrix4 ModelMatrix
+        {
+            get
+            {
+                return Matrix4.CreateRotationX(angle.X) * Matrix4.CreateRotationY(angle.Y) * Matrix4.CreateRotationZ(angle.Z) * 
+                       Matrix4.CreateScale(scale) * Matrix4.CreateTranslation(position);
+            }
+        }
 
 		// initialization; called during first render
 		public void Prepare( Shader shader )
