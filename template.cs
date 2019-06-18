@@ -76,6 +76,8 @@ namespace Template
 			GL.Enable( EnableCap.Texture2D );
 			GL.Disable( EnableCap.DepthTest );
 			GL.Color3( 1.0f, 1.0f, 1.0f );
+
+            // convert MyApplication.Screen to OpenGL texture
 			GL.BindTexture( TextureTarget.Texture2D, screenID );
 			GL.TexImage2D( TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba,
 						   app.screen.width, app.screen.height, 0,
@@ -87,18 +89,23 @@ namespace Template
 			GL.LoadIdentity();
 			GL.MatrixMode( MatrixMode.Projection );
 			GL.LoadIdentity();
+
+            // draw screen filling quad
 			GL.Begin( PrimitiveType.Quads );
 			GL.TexCoord2( 0.0f, 1.0f ); GL.Vertex2( -1.0f, -1.0f );
 			GL.TexCoord2( 1.0f, 1.0f ); GL.Vertex2( 1.0f, -1.0f );
 			GL.TexCoord2( 1.0f, 0.0f ); GL.Vertex2( 1.0f, 1.0f );
 			GL.TexCoord2( 0.0f, 0.0f ); GL.Vertex2( -1.0f, 1.0f );
 			GL.End();
+
 			// prepare for generic OpenGL rendering
 			GL.Enable( EnableCap.DepthTest );
 			GL.Clear( ClearBufferMask.DepthBufferBit );
 			GL.Disable( EnableCap.Texture2D );
+
 			// do OpenGL rendering
 			app.RenderGL();
+
 			// swap buffers
 			SwapBuffers();
 		}
