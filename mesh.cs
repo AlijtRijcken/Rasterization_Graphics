@@ -82,6 +82,7 @@ namespace Template
 
 			// pass transform to vertex shader
 			GL.UniformMatrix4( shader.uniform_mview, false, ref transform );
+            GL.Uniform3(shader.uniform_viewpos, 0, 10, 0);          /////////////////////////////////////HARDCODE CAMERA POSITION
 
 			// enable position, normal and uv attributes
 			GL.EnableVertexAttribArray( shader.attribute_vpos );

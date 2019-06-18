@@ -11,7 +11,7 @@ namespace Template
 		public int attribute_vpos;
 		public int attribute_vnrm;
 		public int attribute_vuvs;
-		public int uniform_mview;
+		public int uniform_mview, uniform_viewpos;
 
 		// constructor
 		public Shader( String vertexShader, String fragmentShader )
@@ -28,7 +28,8 @@ namespace Template
 			attribute_vnrm = GL.GetAttribLocation( programID, "vNormal" );
 			attribute_vuvs = GL.GetAttribLocation( programID, "vUV" );
 			uniform_mview = GL.GetUniformLocation( programID, "transform" );
-		}
+			uniform_viewpos = GL.GetUniformLocation( programID, "viewPos" );
+        }
 
 		// loading shaders
 		void Load( String filename, ShaderType type, int program, out int ID )
