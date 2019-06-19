@@ -15,7 +15,7 @@ namespace Template
 		public ObjTriangle[] triangles;         // triangles (3 vertex indices)
 		public ObjQuad[] quads;                 // quads (4 vertex indices)
         public Vector3 angle, scale, position;  //model matrix variables
-        public List<Mesh> children;
+        public List<Mesh> children;             //List to store hierarchy of meshes
 		int vertexBufferId;                     // vertex buffer
 		int triangleBufferId;                   // triangle buffer
 		int quadBufferId;                       // quad buffer
@@ -31,6 +31,7 @@ namespace Template
             this.position = position;          
 		}
 
+        //Local transform matrix
         public Matrix4 ModelMatrix
         {
             get

@@ -7,7 +7,7 @@ namespace Template
 	{
 		// member variables
 		public Surface screen;                  // background surface for printing etc.
-		Mesh Tpot, Tfloor;                       // a mesh to draw using OpenGL
+		Mesh Tpot, Tfloor, Tdog;                // a mesh to draw using OpenGL
 		const float PI = 3.1415926535f;         // PI
 		Stopwatch timer;                        // timer for measuring frame duration
 		Shader shader;                          // shader to use for rendering
@@ -19,6 +19,8 @@ namespace Template
 			// load teapot
 			Tpot = new Mesh( "../../assets/teapot.obj", new Vector3(0, 0, 0), new Vector3(0.5f, 0.5f, 0.5f), new Vector3(0, 0, 0) );
 			Tfloor = new Mesh( "../../assets/floor.obj", new Vector3(0, 0, 0), new Vector3(4.0f, 4.0f, 4.0f), new Vector3(0, 0, 0) );
+			Tdog = new Mesh( "../../assets/dog.obj", new Vector3(0, 0, 0), new Vector3(0.4f, 0.4f, 0.4f), new Vector3(0, -7f, 0) );
+
 			// initialize stopwatch
 			timer = new Stopwatch();
 			timer.Reset();
@@ -61,6 +63,7 @@ namespace Template
             // render scene
             Tpot.Render( shader, Tpot.ModelMatrix * Tcamera * Tview, wood );
 			Tfloor.Render( shader, Tfloor.ModelMatrix * Tcamera * Tview, wood );
+			Tdog.Render( shader, Tfloor.ModelMatrix * Tcamera * Tview, wood );
 		}
 	}
 }
