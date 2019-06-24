@@ -6,9 +6,8 @@ in vec3 normal;					// interpolated normal
 uniform sampler2D pixels;			// texture sampler
 in vec3 FragPos; 				//gl_Postion set to Frag Position from VertexShader
 
-//uniform vec3 lightPos; 			//uniform position -> add in Template
-//uniform vec3 lightColor; 
-//uniform vec3 lightPos;
+//uniform vec3 lightPos; 				//uniform position of a light
+//uniform vec3 lightColor; 			//uniform color of a light
 
 uniform vec3 viewPos;				//takes camera position to get to world space  
 
@@ -18,9 +17,12 @@ out vec4 outputColor;
 // fragment shader
 void main()
 {
-	vec3 ambient = vec3(0.1);		//HARDCODED -> NEEDS TO BECOME UNIFORM
-	vec3 lightColor = vec3(1);  		//HARDCODED -> NEEDS TO BECOME UNIFORM 
-    	vec3 lightPos = vec3(0, 6, 0);		//HARDCODED -> NEEDS TO BECOME UNIFORM
+	vec3 lightColor = vec3(1);  			//HARDCODED -> NEEDS TO BECOME UNIFORM 
+    	vec3 lightPos = vec3(0, 6, 0);			//HARDCODED -> NEEDS TO BECOME UNIFORM
+
+	//AMBIENT LIGHT
+	float ambientStrength = 0.1;
+	vec3 ambient = ambientStrength * lightColor; 
 
 	//DIFFUSE LIGHT
 

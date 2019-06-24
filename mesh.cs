@@ -16,21 +16,29 @@ namespace Template
 		public ObjQuad[] quads;                 // quads (4 vertex indices)
         public Vector3 angle, scale, position;  //model matrix variables
         public List<Mesh> children;             //List to store hierarchy of meshes
+        public Texture texture;
 		int vertexBufferId;                     // vertex buffer
 		int triangleBufferId;                   // triangle buffer
 		int quadBufferId;                       // quad buffer
 
 		// constructor
-		public Mesh( string fileName, Vector3 angle, Vector3 scale, Vector3 position )
+		public Mesh( string fileName, Vector3 angle, Vector3 scale, Vector3 position, List<Mesh> children, Texture texture )
 		{
 			MeshLoader loader = new MeshLoader();
 			loader.Load( this, fileName );
 
             this.angle = angle;
             this.scale = scale;
-            this.position = position;          
+            this.position = position;
+            this.children = children;
+            this.texture = texture;
 		}
 
+        public void addChild(Mesh mesh)
+        {
+            children.Add(mesh);
+        }
+    
         //Local transform matrix
         public Matrix4 ModelMatrix
         {
@@ -39,6 +47,11 @@ namespace Template
                 return Matrix4.CreateRotationX(angle.X) * Matrix4.CreateRotationY(angle.Y) * Matrix4.CreateRotationZ(angle.Z) * 
                        Matrix4.CreateScale(scale) * Matrix4.CreateTranslation(position);
             }
+        }
+
+        public void Rotation(float rotationSpeed)
+        {
+
         }
 
 		// initialization; called during first render
@@ -81,12 +94,15 @@ namespace Template
 			// enable shader
 			GL.UseProgram( shader.programID );
 
-			// pass transform to vertex shader
-			GL.UniformMatrix4( shader.uniform_mview, false, ref transform );
-            GL.Uniform3(shader.uniform_viewpos, 0, 10, 0);          /////////////////////////////////////HARDCODE CAMERA POSITION
+            // pass transform to vertex shader
+            Matrix4 newMatrix = ModelMatrix * transform;
+			GL.UniformMatrix4( shader.uniform_mview, false, ref newMatrix);
+           // GL.Uniform3(shader.uniform_viewpos, 0, 10, 0);          /////////////////////////////////////HARDCODE CAMERA POSITION
+           // GL.Uniform3(shader.uniform_lightPos, 0, 6, 0); //////////////////////////////////HARDCODED LIGHTPOSITION
+           // GL.Uniform3(shader.uniform_lightColor, 1, 1, 1); //////////////////////////////////HARDCODED LIGHTCOLOR
 
-			// enable position, normal and uv attributes
-			GL.EnableVertexAttribArray( shader.attribute_vpos );
+            // enable position, normal and uv attributes
+            GL.EnableVertexAttribArray( shader.attribute_vpos );
 			GL.EnableVertexAttribArray( shader.attribute_vnrm );
 			GL.EnableVertexAttribArray( shader.attribute_vuvs );
 
@@ -114,6 +130,11 @@ namespace Template
 			// restore previous OpenGL state
 			GL.UseProgram( 0 );
 			GL.PopClientAttrib();
+
+            foreach (Mesh child in children)
+            {
+                child.Render(SceneGraph.shader, newMatrix, child.texture);
+            }
 		}
 
 		// layout of a single vertex
