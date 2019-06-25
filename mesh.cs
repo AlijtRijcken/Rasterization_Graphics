@@ -81,7 +81,7 @@ namespace Template
 		}
 
 		// render the mesh using the supplied shader and matrix
-		public void Render( Shader shader, Matrix4 transform, Texture texture )
+		public void Render( Shader shader, Matrix4 toWorld, Matrix4 transform, Texture texture )
 		{
 			// on first run, prepare buffers
 			Prepare( shader );
@@ -100,7 +100,9 @@ namespace Template
 
             // pass transform to vertex shader
             Matrix4 newMatrix = ModelMatrix * transform;
+            Matrix4 newWorld = ModelMatrix * toWorld;
             GL.UniformMatrix4(shader.uniform_mview, false, ref newMatrix);
+            GL.UniformMatrix4(shader.uniform_tworld, false, ref newWorld);
 
             // enable position, normal and uv attributes
             GL.EnableVertexAttribArray( shader.attribute_vpos );
@@ -135,7 +137,7 @@ namespace Template
             //Render each child that is lower in hierarchy
             foreach (Mesh child in children)
             {
-                child.Render(SceneGraph.shader, newMatrix, child.texture);
+                child.Render(SceneGraph.shader, newWorld, newMatrix, child.texture);
             }
 		}
 

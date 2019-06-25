@@ -32,7 +32,7 @@ void main()
 	vec3 diffuse = diff * lightColor;
 
 	//SPECULAR LIGHT
-	float specularStrength = 5;
+	float specularStrength = 10;
 	
 	vec3 viewDir = normalize(viewPos - FragPos);	//view direction vector
 	vec3 reflectDir = reflect(-lightDir, norm); 	//reflect vector along the normal axis

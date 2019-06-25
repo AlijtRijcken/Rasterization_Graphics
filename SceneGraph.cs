@@ -12,7 +12,7 @@ namespace Template
     class SceneGraph
     {
         List<Mesh> primaryChildren;                                     //Stores nodes in the first layer of the hierarchy  
-        public Matrix4 Tcamera, Tview, cameraMatrix, lightMatrix;       //Transform matrixes
+        public Matrix4 Tcamera, Tview, cameraMatrix, lightMatrix, Tworld;       //Transform matrixes
         public static Shader shader;                                    //Shader to use for rendering
         const float PI = 3.1415926535f;
         public Light Light1;
@@ -24,11 +24,12 @@ namespace Template
             float angle90degrees = PI / 2;
             shader = new Shader("../../shaders/vs.glsl", "../../shaders/fs.glsl");
 
-            Light1 = new Light(new Vector3(-10f, -50f, 10f), new Vector3(0.7f, 0.2f, 0.9f));
+            Light1 = new Light(new Vector3(-10f, -50f, 10f), new Vector3(5f, 5f, 5f));
 
             //Initialize the transformation matrixes
             Tcamera = Matrix4.CreateTranslation(new Vector3(0, -14.5f, 0)) * Matrix4.CreateFromAxisAngle(new Vector3(1, 0, 0), angle90degrees);
             Tview = Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
+            Tworld = Matrix4.Identity;
             //lightMatrix = new Matrix4(new Vector4(Light1.position, 1.0f), new Vector4(Light1.color, 1), new Vector4(0), new Vector4(0));
 
             //Persective Matrix
@@ -51,7 +52,7 @@ namespace Template
 
             foreach (Mesh mesh in primaryChildren)
             {
-                mesh.Render(shader, mesh.ModelMatrix * cameraMatrix, mesh.texture);               
+                mesh.Render(shader, Tworld, cameraMatrix, mesh.texture);               
             }
         }
         
