@@ -11,10 +11,10 @@ namespace Template
 		public int attribute_vpos;
 		public int attribute_vnrm;
 		public int attribute_vuvs;
-		public int uniform_mview, uniform_viewpos, uniform_lightPos, uniform_lightColor, uniform_ambientStrength;
+		public int uniform_mview, uniform_viewpos;
         public int uniform_tworld;
-        public int uniform_input;
-        public int uniform_lightsamount; 
+        public int uniform_input;                   //float array filled with the light data
+        public int uniform_lightsamount;            //total lights in the existing light list (SceneGraph)
 
 
         // constructor
@@ -36,10 +36,6 @@ namespace Template
 			uniform_viewpos = GL.GetUniformLocation( programID, "viewPos" );
             uniform_input = GL.GetUniformLocation(programID, "lights");
             uniform_lightsamount = GL.GetUniformLocation(programID, "lightsamount");
-
-            //uniform_lightPos = GL.GetUniformLocation( programID, "lightPos");
-            //uniform_lightColor = GL.GetUniformLocation(programID, "lightColor");
-            //uniform_ambientStrength = GL.GetUniformLocation(programID, "ambientStrength"); 
         }
 
 		// loading shaders

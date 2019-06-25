@@ -50,11 +50,6 @@ namespace Template
             }
         }
 
-        public void Rotation(float rotationSpeed)
-        {
-
-        }
-
 		// initialization; called during first render
 		public void Prepare( Shader shader )
 		{
