@@ -12,9 +12,7 @@ namespace Template
     class SceneGraph
     {
         List<Mesh> primaryChildren;                                     //Stores nodes in the first layer of the hierarchy  
-
-        public Matrix4 Tcamera, Tview, cameraMatrix, Tworld;       //Transform matrixes
-
+        public Matrix4 Tcamera, Tview, cameraMatrix, Tworld;            //Transform matrixes
         public static Shader shader;                                    //Shader to use for rendering
         const float PI = 3.1415926535f;
         Light Light1, Light2;
@@ -25,11 +23,11 @@ namespace Template
             primaryChildren = new List<Mesh>();
             float angle90degrees = PI / 2;
 
-            //
+            // Loading Shader
             shader = new Shader("../../shaders/vs.glsl", "../../shaders/fs.glsl");
 
             //Initializing lights
-            Light1 = new Light(new Vector3(-10f, -50f, 10f), new Vector3(0.7f, 0.2f, 0.9f), 0.1f);
+            Light1 = new Light(new Vector3(-10f, -50f, 10f), new Vector3(5f, 8f, 5f), 0.1f);
             //Light2 = new Light(new Vector3(5f, -50f, 5f), new Vector3(0.99f, 0.99f, 0.99f));
 
             //Initialize the transformation matrixes
@@ -44,7 +42,6 @@ namespace Template
         //Render the first layer of the hierarchy
         public void Render()
         {
-
             // enable shader
             GL.UseProgram(shader.programID);
 

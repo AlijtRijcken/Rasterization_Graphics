@@ -20,7 +20,6 @@ namespace Template
 		int vertexBufferId;                     // vertex buffer
 		int triangleBufferId;                   // triangle buffer
 		int quadBufferId;                       // quad buffer
-        SceneGraph scenegraph; 
 
 		// constructor, with parameters to initialize each mesh and create a ModelMatrix with the given information
 		public Mesh( string fileName, Vector3 angle, Vector3 scale, Vector3 position, List<Mesh> children, Texture texture )
@@ -33,8 +32,6 @@ namespace Template
             this.position = position;
             this.children = children;
             this.texture = texture;
-
-            scenegraph = new SceneGraph(); 
 		}
 
         //Add nodes that are lower in hierarchy than this.mesh
