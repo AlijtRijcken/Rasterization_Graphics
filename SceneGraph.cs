@@ -13,7 +13,7 @@ namespace Template
     {
         List<Mesh> primaryChildren;                                     //Stores nodes in the first layer of the hierarchy  
 
-        public Matrix4 Tcamera, Tview, cameraMatrix, lightMatrix, Tworld;       //Transform matrixes
+        public Matrix4 Tcamera, Tview, cameraMatrix, Tworld;       //Transform matrixes
 
         public static Shader shader;                                    //Shader to use for rendering
         const float PI = 3.1415926535f;
@@ -28,16 +28,13 @@ namespace Template
             //
             shader = new Shader("../../shaders/vs.glsl", "../../shaders/fs.glsl");
 
-
             //Initializing lights
             Light1 = new Light(new Vector3(-10f, -50f, 10f), new Vector3(0.7f, 0.2f, 0.9f), 0.1f);
             //Light2 = new Light(new Vector3(5f, -50f, 5f), new Vector3(0.99f, 0.99f, 0.99f));
 
-
             //Initialize the transformation matrixes
             Tcamera = Matrix4.CreateTranslation(new Vector3(0, -14.5f, 0)) * Matrix4.CreateFromAxisAngle(new Vector3(1, 0, 0), angle90degrees);
             Tview = Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
-
             Tworld = Matrix4.Identity;
 
             //Persective Matrix
@@ -61,7 +58,7 @@ namespace Template
 
             foreach (Mesh mesh in primaryChildren)
             {
-                mesh.Render(shader, Tworld, cameraMarix, mesh.texture);               
+                mesh.Render(shader, Tworld, cameraMatrix, mesh.texture);               
             }
         }
         
