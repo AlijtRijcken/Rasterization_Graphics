@@ -12,6 +12,8 @@ namespace Template
 		public int attribute_vnrm;
 		public int attribute_vuvs;
 		public int uniform_mview, uniform_viewpos, uniform_lightPos, uniform_lightColor, uniform_ambientStrength;
+        public int uniform_tworld;
+
 
 		// constructor
 		public Shader( String vertexShader, String fragmentShader )
@@ -28,6 +30,7 @@ namespace Template
 			attribute_vnrm = GL.GetAttribLocation( programID, "vNormal" );
 			attribute_vuvs = GL.GetAttribLocation( programID, "vUV" );
 			uniform_mview = GL.GetUniformLocation( programID, "transform" );
+            uniform_tworld = GL.GetUniformLocation(programID, "toworld");
 			uniform_viewpos = GL.GetUniformLocation( programID, "viewPos" );
             uniform_lightPos = GL.GetUniformLocation( programID, "lightPos");
             uniform_lightColor = GL.GetUniformLocation(programID, "lightColor");
