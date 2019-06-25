@@ -17,20 +17,25 @@ namespace Template
 
         public static Shader shader;                                    //Shader to use for rendering
         const float PI = 3.1415926535f;
-        Light Light1, Light2;
+        Light light1, light2;
+        List<Light> lights;
+        float[] lightData; 
 
         //Needs to store a hierarchy of all the meshes that are in the scene. 
         public SceneGraph()
         {
             primaryChildren = new List<Mesh>();
+            lights = new List<Light>();
             float angle90degrees = PI / 2;
 
             //
             shader = new Shader("../../shaders/vs.glsl", "../../shaders/fs.glsl");
 
             //Initializing lights
-            Light1 = new Light(new Vector3(-10f, -50f, 10f), new Vector3(0.7f, 0.2f, 0.9f), 0.1f);
-            //Light2 = new Light(new Vector3(5f, -50f, 5f), new Vector3(0.99f, 0.99f, 0.99f));
+            light1 = new Light(new Vector3(0f, 1f, 0.5f), new Vector3(5, 5, 5), 0.1f);
+            lights.Add(light1);
+            light2 = new Light(new Vector3(5f, -50f, 5f), new Vector3(0.99f, 0.99f, 0.99f), 0.1f);
+            lights.Add(light2);
 
             //Initialize the transformation matrixes
             Tcamera = Matrix4.CreateTranslation(new Vector3(0, -14.5f, 0)) * Matrix4.CreateFromAxisAngle(new Vector3(1, 0, 0), angle90degrees);
@@ -50,9 +55,13 @@ namespace Template
 
             //Passing Uniform variables to the Shader
             GL.UniformMatrix4(shader.uniform_viewpos, false, ref cameraMatrix);
-            GL.Uniform3(shader.uniform_lightPos, Light1.position);
-            GL.Uniform3(shader.uniform_lightColor, Light1.color);
-            GL.Uniform1(shader.uniform_ambientStrength, Light1.ambientStrength);
+            float[] input = listToFloat(lights);
+            int length = lights.Count;
+            GL.Uniform1(shader.uniform_input, input.Length, input);
+            GL.Uniform1(shader.uniform_lightsamount, length);
+            //GL.Uniform3(shader.uniform_lightPos, light1.position);
+            //GL.Uniform3(shader.uniform_lightColor, light1.color);
+            //GL.Uniform1(shader.uniform_ambientStrength, light1.ambient);
 
             GL.UseProgram(0);
 
@@ -103,8 +112,25 @@ namespace Template
             {
                 cameraMatrix = Matrix4.CreateRotationY(-0.01f) * cameraMatrix;
             }
+        }
 
+        float[] listToFloat(List<Light> lights)
+        {
+            float[] result = new float[lights.Count * 8];
+            int i = 0;
 
+            foreach(Light light in lights)
+            {
+                result[i] = light.position.X; i++;
+                result[i] = light.position.Y; i++;
+                result[i] = light.position.Z; i++;
+                result[i] = 0.0f;  i++;
+                result[i] = light.color.X; i++;
+                result[i] = light.color.Y; i++;
+                result[i] = light.color.Z; i++;
+                result[i] = light.ambient; i++;
+            }
+            return result;
         }
     }
 }
