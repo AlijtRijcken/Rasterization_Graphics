@@ -11,9 +11,9 @@ namespace Template
 		public Surface screen;                  // background surface for printing etc.
 		Mesh Tpot, Tfloor, Tdog;                // a mesh to draw using OpenGL
 		Stopwatch timer;                        // timer for measuring frame duration
-		Shader shader;                          // shader to use for rendering
 		Texture wood;                           // texture to use for rendering
-        SceneGraph sceneGraph;
+        SceneGraph sceneGraph;                  // SceneGraph used to render the scene 
+
         const float PI = 3.1415926535f;
         // initialize
         public void Init()
@@ -23,7 +23,7 @@ namespace Template
             // load a texture
             wood = new Texture("../../assets/wood.jpg");
 
-            // load teapot
+            // load meshes
             Tpot = new Mesh( "../../assets/teapot.obj", new Vector3(0, 0, 0), new Vector3(0.5f, 0.5f, 0.5f), new Vector3(0, 0, 0), new List<Mesh>(), wood);
 			Tfloor = new Mesh( "../../assets/floor.obj", new Vector3(0, 0, 0), new Vector3(4.0f, 4.0f, 4.0f), new Vector3(0, 0, 0), new List<Mesh>(), wood);
             //Tdog = new Mesh( "../../assets/dog.obj", new Vector3(0, 0, 0), new Vector3(0.4f, 0.4f, 0.4f), new Vector3(0, -7f, 0) );

@@ -29,8 +29,8 @@ namespace Template
 			attribute_vuvs = GL.GetAttribLocation( programID, "vUV" );
 			uniform_mview = GL.GetUniformLocation( programID, "transform" );
 			uniform_viewpos = GL.GetUniformLocation( programID, "viewPos" );
-            //uniform_lightPos = GL.GetUniformLocation(programID, "lightPos");
-            //uniform_lightColor = GL.GetUniformLocation(programID, "lightColor"); 
+            uniform_lightPos = GL.GetUniformLocation( programID, "lightPos");
+            uniform_lightColor = GL.GetUniformLocation(programID, "lightColor"); 
         }
 
 		// loading shaders

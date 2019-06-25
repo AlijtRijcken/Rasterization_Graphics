@@ -20,8 +20,9 @@ namespace Template
 		int vertexBufferId;                     // vertex buffer
 		int triangleBufferId;                   // triangle buffer
 		int quadBufferId;                       // quad buffer
+        SceneGraph scenegraph; 
 
-		// constructor
+		// constructor, with parameters to initialize each mesh and create a ModelMatrix with the given information
 		public Mesh( string fileName, Vector3 angle, Vector3 scale, Vector3 position, List<Mesh> children, Texture texture )
 		{
 			MeshLoader loader = new MeshLoader();
@@ -32,8 +33,11 @@ namespace Template
             this.position = position;
             this.children = children;
             this.texture = texture;
+
+            scenegraph = new SceneGraph(); 
 		}
 
+        //Add nodes that are lower in hierarchy than this.mesh
         public void addChild(Mesh mesh)
         {
             children.Add(mesh);
@@ -85,21 +89,18 @@ namespace Template
 			// safety dance
 			GL.PushClientAttrib( ClientAttribMask.ClientVertexArrayBit );
 
-			// enable texture
-			int texLoc = GL.GetUniformLocation( shader.programID, "pixels" );
-			GL.Uniform1( texLoc, 0 );
-			GL.ActiveTexture( TextureUnit.Texture0 );
-			GL.BindTexture( TextureTarget.Texture2D, texture.id );
+            // enable shader
+            GL.UseProgram(shader.programID);
 
-			// enable shader
-			GL.UseProgram( shader.programID );
+            // enable texture
+            int texLoc = GL.GetUniformLocation(shader.programID, "pixels");
+            GL.Uniform1(texLoc, 0);
+            GL.ActiveTexture(TextureUnit.Texture0);
+            GL.BindTexture(TextureTarget.Texture2D, texture.id);
 
             // pass transform to vertex shader
             Matrix4 newMatrix = ModelMatrix * transform;
-			GL.UniformMatrix4( shader.uniform_mview, false, ref newMatrix);
-           // GL.Uniform3(shader.uniform_viewpos, 0, 10, 0);          /////////////////////////////////////HARDCODE CAMERA POSITION
-           // GL.Uniform3(shader.uniform_lightPos, 0, 6, 0); //////////////////////////////////HARDCODED LIGHTPOSITION
-           // GL.Uniform3(shader.uniform_lightColor, 1, 1, 1); //////////////////////////////////HARDCODED LIGHTCOLOR
+            GL.UniformMatrix4(shader.uniform_mview, false, ref newMatrix);
 
             // enable position, normal and uv attributes
             GL.EnableVertexAttribArray( shader.attribute_vpos );
@@ -131,6 +132,7 @@ namespace Template
 			GL.UseProgram( 0 );
 			GL.PopClientAttrib();
 
+            //Render each child that is lower in hierarchy
             foreach (Mesh child in children)
             {
                 child.Render(SceneGraph.shader, newMatrix, child.texture);
