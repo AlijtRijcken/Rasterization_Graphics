@@ -51,7 +51,7 @@ namespace Template
 
             foreach (Mesh mesh in primaryChildren)
             {
-                mesh.Render(shader, cameraMatrix, mesh.texture);               
+                mesh.Render(shader, mesh.ModelMatrix * cameraMatrix, mesh.texture);               
             }
         }
         
@@ -82,11 +82,11 @@ namespace Template
             }
             if (state[OpenTK.Input.Key.W])
             {
-                cameraMatrix *= Matrix4.CreateTranslation(0, 0, 0.05f);
+                cameraMatrix = Matrix4.CreateRotationX(0.01f) * cameraMatrix;
             }
             if (state[OpenTK.Input.Key.S])
             {
-                cameraMatrix *= Matrix4.CreateTranslation(0, 0, -0.05f);
+                cameraMatrix = Matrix4.CreateRotationX(-0.01f) * cameraMatrix;
             }
             if (state[OpenTK.Input.Key.A])
             {
