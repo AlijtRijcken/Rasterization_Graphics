@@ -12,25 +12,28 @@ namespace Template
     class SceneGraph
     {
         List<Mesh> primaryChildren;                                     //Stores nodes in the first layer of the hierarchy  
-        public Matrix4 Tcamera, Tview, cameraMatrix, lightMatrix;       //Transform matrixes
+        Matrix4 Tcamera, Tview, cameraMatrix;                           //Transform matrixes
         public static Shader shader;                                    //Shader to use for rendering
         const float PI = 3.1415926535f;
-        public Light Light1;
+        Light Light1, Light2;
 
         //Needs to store a hierarchy of all the meshes that are in the scene. 
         public SceneGraph()
         {
             primaryChildren = new List<Mesh>();
             float angle90degrees = PI / 2;
+
+            //
             shader = new Shader("../../shaders/vs.glsl", "../../shaders/fs.glsl");
 
-            Light1 = new Light(new Vector3(-10f, -50f, 10f), new Vector3(0.7f, 0.2f, 0.9f));
+            //Initializing lights
+            Light1 = new Light(new Vector3(-10f, -50f, 10f), new Vector3(0.7f, 0.2f, 0.9f), 0.1f);
+            //Light2 = new Light(new Vector3(5f, -50f, 5f), new Vector3(0.99f, 0.99f, 0.99f));
 
             //Initialize the transformation matrixes
             Tcamera = Matrix4.CreateTranslation(new Vector3(0, -14.5f, 0)) * Matrix4.CreateFromAxisAngle(new Vector3(1, 0, 0), angle90degrees);
             Tview = Matrix4.CreatePerspectiveFieldOfView(1.2f, 1.3f, .1f, 1000);
-            //lightMatrix = new Matrix4(new Vector4(Light1.position, 1.0f), new Vector4(Light1.color, 1), new Vector4(0), new Vector4(0));
-
+           
             //Persective Matrix
             cameraMatrix = Tcamera * Tview;
         }
@@ -46,12 +49,13 @@ namespace Template
             GL.UniformMatrix4(shader.uniform_viewpos, false, ref cameraMatrix);
             GL.Uniform3(shader.uniform_lightPos, Light1.position);
             GL.Uniform3(shader.uniform_lightColor, Light1.color);
+            GL.Uniform1(shader.uniform_ambientStrength, Light1.ambientStrength);
 
             GL.UseProgram(0);
 
             foreach (Mesh mesh in primaryChildren)
             {
-                mesh.Render(shader, mesh.ModelMatrix * cameraMatrix, mesh.texture);               
+                mesh.Render(shader, cameraMatrix, mesh.texture);               
             }
         }
         

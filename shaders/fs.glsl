@@ -8,6 +8,7 @@ in vec3 FragPos; 				//gl_Postion set to Frag Position from VertexShader
 
 uniform vec3 lightPos; 				//uniform position of a light
 uniform vec3 lightColor; 			//uniform color of a light
+uniform float ambientStrength; 			//uniform ambient value
 
 uniform vec3 viewPos;				//takes camera position to get to world space  
 
@@ -19,7 +20,6 @@ void main()
 {
 
 	//AMBIENT LIGHT
-	float ambientStrength = 0.1;
 	vec3 ambient = ambientStrength * lightColor; 
 
 	//DIFFUSE LIGHT
